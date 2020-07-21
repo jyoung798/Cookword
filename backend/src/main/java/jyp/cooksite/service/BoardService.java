@@ -53,4 +53,7 @@ public class BoardService {
 	public List<Board> findBytitle(String title) {
 		return boardRepository.findByName(title);
 	}
+	public List<Board> findByMenu(String menu) {
+		return boardRepository.findByMenu(menu);
+	}
 }

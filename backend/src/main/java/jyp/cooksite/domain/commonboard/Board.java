@@ -37,6 +37,8 @@ public class Board {
 
 	private String title;
 
+	private String menu;
+	
 	@Column(length = 2000)
 	private String content;
 

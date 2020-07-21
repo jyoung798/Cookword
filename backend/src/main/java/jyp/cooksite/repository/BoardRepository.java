@@ -47,5 +47,12 @@ public class BoardRepository {
 				.getResultList();
 	}
 	
+	//게시판 메뉴를 통해 검색
+	public List<Board> findByMenu(String menu) {
+		return em.createQuery("select b from Board b where b.menu = :menu", Board.class)
+				.setParameter("menu", menu)
+				.getResultList();
+	}
+	
 	
 }

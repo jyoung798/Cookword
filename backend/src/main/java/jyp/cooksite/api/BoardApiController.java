@@ -73,6 +73,7 @@ public class BoardApiController {
 			
 			Board board = Board.builder()
 					.title(boardDto.getTitle())
+					.menu(boardDto.getMenu())
 					.content(boardDto.getContents())
 					.createdDate(LocalDate.now())
 					.build();
@@ -137,6 +138,13 @@ public class BoardApiController {
 			
 		}
 
+		//특정 메뉴 번호에 따라 게시판 목록 리스트 호출
+		@GetMapping("/posts/menu/{id}")
+		public ListResult<Board> fetchPosts(@PathVariable("id") Long id) {
+			
+			
+			 return responseService.getListResult(boardService.findByMenu( Long.toString(id) ) ); //list.안에 Board 객체 
+		} 
 	
 
 }
