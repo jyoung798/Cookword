@@ -26,5 +26,17 @@ function editPost(postId, postData) {
 function upload(file) {
 	return posts.post('/upload', file);
 }
+//메뉴에 따라 게시판 목록 호출
+function fetchBoardList(menuNum) {
+	return posts.get('/menu/' + menuNum);
+}
 
-export { fetchPosts, createPost, deletePost, fetchPost, editPost, upload };
+export {
+	fetchPosts,
+	createPost,
+	deletePost,
+	fetchPost,
+	editPost,
+	upload,
+	fetchBoardList,
+};

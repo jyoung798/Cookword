@@ -13,6 +13,10 @@
 					<input id="title" type="text" v-model="title" />
 				</div>
 				<div>
+					<label for="title">메뉴:</label>
+					<input id="title" type="text" v-model="menu" />
+				</div>
+				<div>
 					<div id="editor">
 						<VueEditor
 							useCustomImageHandler
@@ -58,6 +62,7 @@ export default {
 		return {
 			title: '',
 			contents: '',
+			menu: '',
 			logMessage: '',
 			content: '<h2>Example</h2>',
 			// editorOption: {},
@@ -80,6 +85,7 @@ export default {
 				//const response =
 				await createPost({
 					title: this.title,
+					menu: this.menu,
 					contents: this.content,
 				});
 				this.$router.push('/main');
