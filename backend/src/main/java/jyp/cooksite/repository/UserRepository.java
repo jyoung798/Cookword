@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
 import jyp.cooksite.domain.user.User;
 
 @Repository
-public class UserRepository {
+public class UserRepository  {
 
 	@PersistenceContext
 	private EntityManager em;

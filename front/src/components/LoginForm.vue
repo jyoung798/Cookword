@@ -1,19 +1,75 @@
 <template>
-	<form>
-		<div>
-			<label for="email">email: </label>
-			<input id="email" type="text" />
+	<div class="contents">
+		<div class="form-wrapper form-wrapper-sm">
+			<form @submit.prevent="submitForm" class="form">
+				<div>
+					<label for="email">email: </label>
+					<input id="email" type="text" v-model="email" />
+					<p class="validation-text">
+						<span class="warning" v-if="!isUserEmailValid && email">
+							Please enter an email address
+						</span>
+					</p>
+				</div>
+				<div>
+					<label for="pw">pw: </label>
+					<input id="pw" type="text" v-model="pw" />
+				</div>
+				<button v-bind:disabled="!isUserEmailValid || !pw" type="submit">
+					로그인
+				</button>
+			</form>
+			<p>{{ log }}</p>
 		</div>
-		<div>
-			<label for="pw">pw: </label>
-			<input id="pw" type="text" />
-		</div>
-		<button type="submit">로그인</button>
-	</form>
+	</div>
 </template>
 
 <script>
-export default {};
+import { validateEmail } from '../utils/validation';
+
+export default {
+	data() {
+		return {
+			email: '',
+			pw: '',
+			log: '',
+		};
+	},
+	computed: {
+		isUserEmailValid() {
+			return validateEmail(this.email);
+		},
+	},
+	methods: {
+		async submitForm() {
+			try {
+				const userData = {
+					email: this.email,
+					pw: this.pw,
+				};
+				//await 없으면 에러
+				await this.$store.dispatch('LOGIN', userData);
+				//await : login이 끝나고 라우터 푸쉬로 이동해야 하기때문
+				// const response = await loginUser(userData);
+				// this.$store.commit('setToken', response.data.token);
+				// this.$store.commit('setEmail', response.data.email);
+				// saveAuthToCookie(response.data.token);
+				// saveUserToCookie(response.data.email);
+
+				// this.log = `${response.data.email}님 환영합니다`;
+				//	this.initForm();
+				this.$router.push('/main');
+			} catch (error) {
+				console.log(error.response);
+				this.log = `아이디 및 비밀번호가 일치하지 않습니다.`;
+			}
+		},
+		initForm() {
+			this.email = '';
+			this.pw = '';
+		},
+	},
+};
 </script>
 
 <style></style>

@@ -1,12 +1,15 @@
 package jyp.cooksite.domain.user;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,6 +22,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotEmpty;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jyp.cooksite.domain.Address;
 import jyp.cooksite.domain.blog.Blogs;
 import jyp.cooksite.domain.blog.blogComments;
@@ -28,21 +37,28 @@ import lombok.Builder.Default;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+@Builder
 @Entity
-@Getter
-@Setter
-public class User {
-
+@Getter @Setter
+@NoArgsConstructor // 인자없는 생성자를 자동 생성 
+@AllArgsConstructor //
+public class User implements UserDetails {
+	
+	
+		
 	@Id
 	@GeneratedValue
 	@Column(name = "user_id")
 	private Long id;
 	
+
 	@NotEmpty
 	private String nickname;
 
 	@NotEmpty
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String pw;
 
 	@NotEmpty
@@ -51,19 +67,22 @@ public class User {
 	@Embedded
 	private Address address;
 
+	// 권한
+	@ElementCollection(fetch = FetchType.EAGER)
+	@Builder.Default
+	private List<String> roles = new ArrayList<>();
+
 	// 공통 게시판
 	@OneToMany(mappedBy = "user")
 	private List<Board> boards = new ArrayList<>();
 
-	//공통 게시판 댓글 
+	// 공통 게시판 댓글
 	@OneToMany(mappedBy = "user")
 	private List<boardComments> boardcomments = new ArrayList<>();
-	
+
 	// 유저 관계
 	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "user_relations", 
-				joinColumns = @JoinColumn(name = "owner_id"), 
-				inverseJoinColumns = @JoinColumn(name = "follower_id"))
+	@JoinTable(name = "user_relations", joinColumns = @JoinColumn(name = "owner_id"), inverseJoinColumns = @JoinColumn(name = "follower_id"))
 	private Set<User> followers = new HashSet<User>();
 
 	public void addFollower(User follower) {// 내가 추천한 User의 addFollower 메소드에 나 자신의 User 가 들어감
@@ -78,25 +97,54 @@ public class User {
 		followed.addFollower(this); // 내가 추천한 user의 팔로우수 증가 메소드 호출
 	}
 
-	protected User() {
-
-	}
-
-	//유저 생성자 
-	public User(String email, String pw, String nickname) {
-		
-		this.email = email;
-		this.pw=pw;
-		this.nickname = nickname;
-	}
-
-	
-	//블로그 관계
-	@OneToOne(mappedBy = "user",fetch = FetchType.LAZY)
+	// 블로그 관계
+	@OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
 	private Blogs blog;
-	
-	//개인 블로그 comment 관계
-	@OneToMany(mappedBy = "user" , cascade = CascadeType.ALL)
+
+	// 개인 블로그 comment 관계
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<blogComments> blogcomments = new ArrayList<>();
+	
+	/*
+	 * userdetail 구현 메소드 
+	 */
+	@Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+    }
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+	@Override
+	public String getPassword() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
 
 }

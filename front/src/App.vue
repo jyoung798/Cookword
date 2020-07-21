@@ -1,17 +1,26 @@
 <template>
-	<div>
+	<div class="app">
 		<AppHeader></AppHeader>
-		<router-view></router-view>
+		<SideBar></SideBar>
+		<div class="app-contents">
+			<router-view :key="$route.fullPath"></router-view>
+		</div>
 	</div>
 </template>
 
 <script>
 import AppHeader from '@/components/common/AppHeader.vue';
+import SideBar from '@/components/common/SideBar.vue';
+
 export default {
 	components: {
 		AppHeader,
+		SideBar,
 	},
 };
 </script>
 
-<style></style>
+<style>
+@import './css/base.css';
+@import './css/common.css';
+</style>
