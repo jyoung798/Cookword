@@ -73,7 +73,7 @@ public class UserApiController {
 			throw new CEmailSigninFailedException("아이디 및 비밀번호 오류");
 		}
 	
-		return new LoginUserResponse(0, "login", logindto.getEmail(),jwtTokenProvider.createToken(user.getEmail(), user.getRoles()));
+		return new LoginUserResponse(0, "login", logindto.getEmail(),jwtTokenProvider.createToken(user.getEmail(), user.getRoles()),user.getNickname());
 		//return responseService.getSingleResult(jwtTokenProvider.createToken(user.getEmail(), user.getRoles())) ;
 	}
 	

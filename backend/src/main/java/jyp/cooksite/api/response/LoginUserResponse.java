@@ -11,13 +11,13 @@ public class LoginUserResponse {
 	private String email;
 	private String token;
 
-	public LoginUserResponse(int status, String message,String email,String token) {
+	public LoginUserResponse(int status, String message,String email,String token,String nickname) {
 		super();
 		this.status = status;
 		this.message = message;
-	
 		this.email=email;
 		this.token=token;
+		this.nickname=nickname;
 	}
 
 	

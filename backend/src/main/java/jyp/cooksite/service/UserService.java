@@ -52,7 +52,7 @@ public class UserService {
 		if(!user.getPw().equals(logindto.getPw())) {
 			throw new RuntimeException("비밀번호가 맞지 않습니다.");
 		}
-		return new LoginUserResponse(200,"Login success",user.getNickname(),user.getEmail());
+		return new LoginUserResponse(200,"Login success",user.getNickname(),user.getEmail(),user.getNickname());
 		
 	}
 	

@@ -3,7 +3,13 @@
 		<nav><img src="../../assets/logo.png" style="height:40px" /></nav>
 		<div class="userstate">
 			<template v-if="isUserLogin">
-				<span class="nickname">{{ $store.state.email }}</span>
+				<span class="nickname">
+					<strong>{{ $store.state.nickname }}</strong> 님</span
+				>
+				<br />
+				<p style="margin-bottom: 0.1rem;">좋은 하루입니다.</p>
+				<br />
+				<a href="javascript:;">마이페이지</a><br />
 				<a href="javascript:;" @click="logoutUser">로그아웃</a>
 			</template>
 			<template v-else>
@@ -83,6 +89,7 @@ export default {
 <style>
 .userstate {
 	text-align: center;
+	font-size: 1.2rem;
 }
 .nickname {
 	color: black;

@@ -1,14 +1,22 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import { getAuthFromCookie, getUserFromCookie } from '@/utils/cookies.js';
+import {
+	getAuthFromCookie,
+	getUserFromCookie,
+	getNickFromCookie,
+} from '@/utils/cookies.js';
 import { loginUser } from '@/api/auth';
-import { saveAuthToCookie, saveUserToCookie } from '@/utils/cookies.js';
+import {
+	saveAuthToCookie,
+	saveUserToCookie,
+	saveNickToCookie,
+} from '@/utils/cookies.js';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
 	state: {
 		email: getUserFromCookie() || '',
-		nickname: '',
+		nickname: getNickFromCookie() || '',
 		token: getAuthFromCookie() || '',
 	},
 	getters: {
@@ -40,11 +48,13 @@ export default new Vuex.Store({
 		//LOGIN(context)
 		async LOGIN({ data }, userData) {
 			const response = await loginUser(userData);
-
 			this.commit('setToken', response.data.token);
 			this.commit('setEmail', response.data.email);
+			this.commit('setNickname', response.data.nickname);
+
 			saveAuthToCookie(response.data.token);
 			saveUserToCookie(response.data.email);
+			saveNickToCookie(response.data.nickname);
 			return data; //리턴 없어도 프로미스가 리턴됨
 		},
 	},
