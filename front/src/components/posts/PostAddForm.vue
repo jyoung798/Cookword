@@ -3,9 +3,9 @@
 		<h1 class="page-header">
 			New Aarticle
 		</h1>
-		<p>
+		<!-- <p>
 			<img src="http://localhost:3000/image/abc.jpg" style="width:100px" />
-		</p>
+		</p> -->
 		<div class="form-wrapper">
 			<form class="form" @submit.prevent="submitForm">
 				<div>
@@ -13,8 +13,30 @@
 					<input id="title" type="text" v-model="title" />
 				</div>
 				<div>
-					<label for="title">메뉴:</label>
-					<input id="title" type="text" v-model="menu" />
+					<select class="selectbox" required="" v-model="menu">
+						<option value="">게시판을 선택해 주세요.</option>
+
+						<option value="1" data-external="" data-anonymity="false">
+							게시판1
+						</option>
+
+						<option value="2" data-external="" data-anonymity="false">
+							게시판2
+						</option>
+						<option value="3" data-external="" data-anonymity="false">
+							게시판3
+						</option>
+
+						<option value="4" data-external="" data-anonymity="false">
+							게시판4
+						</option>
+						<option value="5" data-external="" data-anonymity="false">
+							게시판5
+						</option>
+					</select>
+
+					<!-- <label for="title">메뉴:</label>
+					<input id="title" type="text" v-model="menu" /> -->
 				</div>
 				<div>
 					<div id="editor">
@@ -128,5 +150,17 @@ export default {
 }
 .btn {
 	color: white;
+}
+.quill-editor iframe {
+	pointer-events: none;
+}
+.selectbox {
+	font-family: inherit;
+	font-size: 90%;
+	width: 100%;
+	border: 1px solid #dae1e7;
+	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+	padding: 0.5rem 0.75rem;
+	margin-bottom: 1rem;
 }
 </style>

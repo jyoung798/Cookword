@@ -1,5 +1,16 @@
 <template>
 	<nav class="sidebar">
+		<nav><img src="../../assets/logo.png" style="height:40px" /></nav>
+		<div class="userstate">
+			<template v-if="isUserLogin">
+				<span class="nickname">{{ $store.state.email }}</span>
+				<a href="javascript:;" @click="logoutUser">로그아웃</a>
+			</template>
+			<template v-else>
+				<router-link to="/login">로그인 </router-link>
+				<router-link to="/signup"> 회원가입</router-link>
+			</template>
+		</div>
 		<nav class="sidecontainer">
 			<router-link :to="headerlink">
 				<a class="sidebar_menu menu_btn">
@@ -31,8 +42,12 @@
 </template>
 
 <script>
+import { deleteCookie } from '../../utils/cookies';
 export default {
 	computed: {
+		isUserLogin() {
+			return this.$store.getters.isLogin;
+		},
 		headerlink() {
 			return this.$store.getters.isLogin ? '/main' : '/login';
 		},
@@ -53,36 +68,25 @@ export default {
 		},
 	},
 	methods: {
-		// menu1() {
-		// 	console.log('메뉴1');
-		// 	this.$store.commit('setMemuNum', 1);
-		// 	this.$router.push({
-		// 		path: '/menu/1',
-		// 	});
-		// },
-		// menu2() {
-		// 	console.log('메뉴2');
-		// 	this.$store.commit('setMemuNum', 2);
-		// 	this.$router.push('/menu/2');
-		// },
-		// menu3() {
-		// 	console.log('메뉴3');
-		// 	this.$store.commit('setMemuNum', 3);
-		// 	this.$router.push('/menu');
-		// },
-		// menu4() {
-		// 	console.log('메뉴4');
-		// 	this.$router.push('/menu');
-		// },
-		// menu5() {
-		// 	console.log('메뉴5');
-		// 	this.$router.push('/menu');
-		// },
+		logoutUser() {
+			this.$store.commit('clearEmail');
+			this.$store.commit('clearToken');
+
+			deleteCookie('til_auth');
+			deleteCookie('til_user');
+			this.$router.push('/login');
+		},
 	},
 };
 </script>
 
 <style>
+.userstate {
+	text-align: center;
+}
+.nickname {
+	color: black;
+}
 .sidebar {
 	top: 0;
 	height: 100%;
