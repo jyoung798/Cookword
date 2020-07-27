@@ -61,7 +61,8 @@ public class User implements UserDetails {
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String pw;
 
-	@NotEmpty
+	
+	@Column(nullable = false ,unique = true) //unique -> 2명 동시에 가입 방지 
 	private String email;
 
 	@Embedded
