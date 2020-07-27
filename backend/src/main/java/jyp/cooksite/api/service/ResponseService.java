@@ -69,5 +69,13 @@ public class ResponseService {
 		result.setMsg(CommonResponse.FAIL.getMsg());
 		return result;
 	}
+	//코드랑 메세지 직접 작성 가능한 실패 리턴 클래스 
+	public CommonResult getFailResult(int code,String msg) {
+		CommonResult result = new CommonResult();
+		result.setSuccess(false);
+		result.setCode(code);
+		result.setMsg(msg);
+		return result;
+	}
 
 }

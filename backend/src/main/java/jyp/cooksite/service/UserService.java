@@ -44,17 +44,17 @@ public class UserService {
 	
 	
 	//로그인 로직 입니다.
-	public LoginUserResponse login(LoginDto logindto) {
-		User user = userRepository.findByEmail(logindto.getEmail());
-		if(user == null) {
-			throw new RuntimeException("아이디가 존재하지 않습니다.");
-		}
-		if(!user.getPw().equals(logindto.getPw())) {
-			throw new RuntimeException("비밀번호가 맞지 않습니다.");
-		}
-		return new LoginUserResponse(200,"Login success",user.getNickname(),user.getEmail(),user.getNickname());
-		
-	}
+//	public LoginUserResponse login(LoginDto logindto) {
+//		User user = userRepository.findByEmail(logindto.getEmail());
+//		if(user == null) {
+//			throw new RuntimeException("아이디가 존재하지 않습니다.");
+//		}
+//		if(!user.getPw().equals(logindto.getPw())) {
+//			throw new RuntimeException("비밀번호가 맞지 않습니다.");
+//		}
+//		return new LoginUserResponse(200,"Login success",user.getNickname(),user.getEmail(),user.getNickname());
+//		
+//	}
 	
 	
 	public User loadUserByUsername(String userPk) {
