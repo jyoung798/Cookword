@@ -1,14 +1,18 @@
 package jyp.cooksite.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import jyp.cooksite.api.exception.DuplicatedUserException;
+import jyp.cooksite.api.exception.UserNotFoundException;
 import jyp.cooksite.api.request.LoginDto;
 import jyp.cooksite.api.response.LoginUserResponse;
-import jyp.cooksite.config.CUserNotFoundException;
+
 import jyp.cooksite.domain.user.User;
 
 import jyp.cooksite.repository.UserRepository;
@@ -35,10 +39,11 @@ public class UserService {
 	//같은 이메일인지 확인합니다.
 	private void checkDuplicateUser(User user) {
 	//	System.out.println("user email : ~ "+user.getEmail());
-		User finduser = userRepository.findByEmail(user.getEmail());
+		Optional<User> finduser = userRepository.findByEmail(user.getEmail() ) ; //.orElseThrow(DuplicatedUserException::new);
+		//finduser.isPresent()
 		
 		if (finduser!=null) {
-			throw new IllegalStateException("이미 가입한 회원입니다.");
+			throw new DuplicatedUserException("이미 가입한 회원입니다.");
 		}
 	}
 	
@@ -57,8 +62,8 @@ public class UserService {
 //	}
 	
 	
-	public User loadUserByUsername(String userPk) {
-        return userRepository.findByEmail(userPk); //exception : 회원 못찾았을 경우 정의 
+	public UserDetails loadUserByUsername(String userPk) {
+		return userRepository.findByEmail(userPk).orElseThrow(UserNotFoundException::new); 
     }
 	
 	
@@ -66,13 +71,13 @@ public class UserService {
 		return userRepository.findAll();
 	}
 	
-	public List<User> findUsers(String name) { // 친구 찾기 
-		return userRepository.findByName(name);
-	}
+//	public List<User> findUsers(String name) { // 친구 찾기 
+//		return userRepository.findByName(name);
+//	}
 	
 	
-	public User findOne(Long userid) {
-		return userRepository.findOne(userid);
+	public Optional<User> findOne(Long userid) {
+		return userRepository.findById(userid);
 	}
 
 }

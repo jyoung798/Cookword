@@ -2,6 +2,7 @@ package jyp.cooksite.api.controller;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -79,18 +80,15 @@ public class UserApiController {
 	//@CrossOrigin(origins = "http://localhost:8080") // logindto => email, pw 
 	public SingleResult<LoginUserResponse> login(@RequestBody LoginDto logindto) throws Exception{
 		
-		 User user = userRepository.findByEmail(logindto.getEmail());
+		 User user = userRepository.findByEmail(logindto.getEmail()).orElseThrow(UserNotFoundException::new) ;
 		 
-		if(user==null) {
-			throw new UserNotFoundException();
-		}
+		
 	
-		if(!passwordEncoder.matches(logindto.getPw(), user.getPw())) {
+		if(!passwordEncoder.matches(logindto.getPw(), user.getPw() ) ) {
 			throw new CEmailSigninFailedException("비밀번호가 맞지 않습니다.");
 		}
 	
-		//return new LoginUserResponse(0, "login", logindto.getEmail(),jwtTokenProvider.createToken(user.getEmail(), user.getRoles()),user.getNickname());
-		//return responseService.getSingleResult(jwtTokenProvider.createToken(user.getEmail(), user.getRoles())) ;
+		
 		return responseService.getSingleResult(new LoginUserResponse(logindto.getEmail(), jwtTokenProvider.createToken(user.getEmail(), user.getRoles()),
 				user.getNickname()) );
 	}
