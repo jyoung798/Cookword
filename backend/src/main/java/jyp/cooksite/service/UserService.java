@@ -42,7 +42,7 @@ public class UserService {
 		Optional<User> finduser = userRepository.findByEmail(user.getEmail() ) ; //.orElseThrow(DuplicatedUserException::new);
 		//finduser.isPresent()
 		
-		if (finduser!=null) {
+		if (finduser.isPresent()) {
 			throw new DuplicatedUserException("이미 가입한 회원입니다.");
 		}
 	}

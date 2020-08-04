@@ -27,7 +27,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jyp.cooksite.domain.Address;
 import jyp.cooksite.domain.blog.Blogs;
 import jyp.cooksite.domain.blog.blogComments;
@@ -39,12 +40,14 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import jyp.cooksite.domain.commonboard.commonDate;
 @Builder
 @Entity
 @Getter @Setter
 @NoArgsConstructor // 인자없는 생성자를 자동 생성 
 @AllArgsConstructor //
-public class User implements UserDetails {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class User extends commonDate implements UserDetails {
 	
 	
 		
@@ -73,9 +76,8 @@ public class User implements UserDetails {
 	@Builder.Default
 	private List<String> roles = new ArrayList<>();
 
-	// 공통 게시판
-	@OneToMany(mappedBy = "user")
-	private List<Board> boards = new ArrayList<>();
+	
+	
 
 	// 공통 게시판 댓글
 	@OneToMany(mappedBy = "user")

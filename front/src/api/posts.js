@@ -31,6 +31,10 @@ function fetchBoardList(menuNum) {
 	return posts.get('/menu/' + menuNum);
 }
 
+//게시판 상세 페이지 호출
+function fetchBoardDetail(menuNum) {
+	return posts.get('/detail/' + menuNum);
+}
 export {
 	fetchPosts,
 	createPost,
@@ -39,4 +43,5 @@ export {
 	editPost,
 	upload,
 	fetchBoardList,
+	fetchBoardDetail,
 };

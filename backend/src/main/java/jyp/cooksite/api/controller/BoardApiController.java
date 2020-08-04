@@ -13,6 +13,8 @@ import javax.validation.Valid;
 
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -37,9 +39,11 @@ import jyp.cooksite.api.response.CreateUserResponse;
 import jyp.cooksite.api.response.ListResult;
 import jyp.cooksite.api.response.LoginUserResponse;
 import jyp.cooksite.api.response.SingleResult;
+import jyp.cooksite.api.response.dto.PostDetailResponse;
 import jyp.cooksite.api.service.ResponseService;
 import jyp.cooksite.config.JwtTokenProvider;
 import jyp.cooksite.domain.commonboard.Board;
+import jyp.cooksite.domain.commonboard.Post;
 import jyp.cooksite.domain.user.User;
 import jyp.cooksite.exception.CEmailSigninFailedException;
 import jyp.cooksite.repository.BoardRepository;
@@ -53,7 +57,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BoardApiController {
 
-	private final BoardRepository boardRepository;
+	
 	private final ResponseService responseService;
 	private final BoardService boardService;
 	
@@ -62,49 +66,37 @@ public class BoardApiController {
 	        @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
 		})
 	@GetMapping("/posts")
-	public ListResult<Board> fetchPosts() {
+	public ListResult<Post> fetchPosts() {
 		
-		 return responseService.getListResult(boardService.findAll()); //list.안에 Board 객체 
+			
+		 return responseService.getListResult(boardService.findAll()); //list.안에 post 객체 
 	}
 	
-	//공통 게시판 글쓰기 
-		@PostMapping("/posts")
+	//공통 게시판 글쓰기  //service.post(String eid ,BoardDto boardDto) =>Long 반환
+		@PostMapping("/posts") 
 		public SingleResult<Long> post(@RequestBody BoardDto boardDto) {
 			
-			Board board = Board.builder()
-					.title(boardDto.getTitle())
-					.menu(boardDto.getMenu())
-					.content(boardDto.getContents())
-					.createdDate(LocalDate.now())
-					.build();
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	        String eid = authentication.getName();
 					
 				
-			Long id=boardService.post(board);
-		
-			return responseService.getSingleResult(id);
+	        return responseService.getSingleResult(
+	        		boardService.post(eid, boardDto));
 		}
 		
+		//게시물 삭제
 		@DeleteMapping("/posts/{id}")
 	    public SingleResult<Long> delete(@PathVariable("id") Long id) {
 	        boardService.delete(id);
 	        
 	        return responseService.getSingleResult(id);
 	    }
-
-		//특정 게시물 수정시 
-		@GetMapping("/posts/{id}")
-		public SingleResult<Board> fetchPost(@PathVariable("id") Long id){
-			
-			Board board= boardService.findOne(id);
-			
-			
-			return responseService.getSingleResult(board);
-		}
 		
+		//게시물 수정
 		@PutMapping("/posts/{id}")
 		public SingleResult<Long> editPost(@PathVariable("id") Long id,@RequestBody BoardDto boardDto){
 			
-			boardService.update(id, boardDto.getTitle(), boardDto.getContents());
+			boardService.update(id, boardDto);
 			return responseService.getSingleResult(id);
 		}
 	
@@ -140,11 +132,19 @@ public class BoardApiController {
 
 		//특정 메뉴 번호에 따라 게시판 목록 리스트 호출
 		@GetMapping("/posts/menu/{id}")
-		public ListResult<Board> fetchPosts(@PathVariable("id") Long id) {
+		public ListResult<Post> fetchPosts(@PathVariable("id") Long id) {
 			
 			
-			 return responseService.getListResult(boardService.findByMenu( Long.toString(id) ) ); //list.안에 Board 객체 
+			 return responseService.getListResult(boardService.findPosts( "board"+id ) ); //list.안에 Board 객체 
 		} 
-	
+		
+		//게시판 상세 페이지 불러오기
+		@GetMapping("/posts/detail/{id}")
+		public SingleResult<PostDetailResponse> fetchDetail(@PathVariable("id") Long id) {
+			
+			
+			 return responseService.getSingleResult(boardService.findOne(id) );  
+		} 
+		
 
 }

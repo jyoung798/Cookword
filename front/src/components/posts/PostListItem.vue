@@ -4,10 +4,11 @@
 			{{ postItem.title }}
 		</div>
 		<div class="post-contents" v-html="content">
+			<!--태그속성 반영하기위해 vhtml사용-->
 			<!-- {{ postItem.content }} -->
 		</div>
 		<div class="post-time">
-			{{ postItem.createdDate }}
+			{{ postItem.createdAt }}
 			<ion-icon name="create-outline" class="icon" @click="editItem"></ion-icon>
 			<ion-icon
 				name="trash-outline"

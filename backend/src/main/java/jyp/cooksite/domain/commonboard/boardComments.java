@@ -11,12 +11,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import jyp.cooksite.domain.user.User;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter @Setter
-public class boardComments {
+@NoArgsConstructor // 인자없는 생성자를 자동 생성
+@AllArgsConstructor //
+public class boardComments extends commonDate {
 
 	@Id
 	@GeneratedValue
@@ -28,10 +32,8 @@ public class boardComments {
 	private User user;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "board_id")
-	private Board board;
-	
-	
+	@JoinColumn(name = "post_id")
+	private Post post;
 	
 	private String content;
 	
@@ -39,7 +41,15 @@ public class boardComments {
 	
 	private LocalDate modDate;
 	
-	
+	//boardComments(user,post,commentDto.getContents())
+	public static boardComments createboardComments(User user,Post post , String contents) {
+		boardComments bc = new boardComments();
+		bc.setUser(user); 
+		bc.setPost(post); //user 랑 post set 메소드 만들어서 양방향 연관관계 만들어야함 : 목록에서 댓글 개수 조회할때
+		bc.setContent(contents);
+		
+		return bc;
+	}
 	
 	
 	

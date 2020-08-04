@@ -48,13 +48,14 @@ export default new Vuex.Store({
 		//LOGIN(context)
 		async LOGIN({ data }, userData) {
 			const response = await loginUser(userData);
-			this.commit('setToken', response.data.token);
-			this.commit('setEmail', response.data.email);
-			this.commit('setNickname', response.data.nickname);
+			console.log(response.data);
+			this.commit('setToken', response.data.data.token);
+			this.commit('setEmail', response.data.data.email);
+			this.commit('setNickname', response.data.data.nickname);
 
-			saveAuthToCookie(response.data.token);
-			saveUserToCookie(response.data.email);
-			saveNickToCookie(response.data.nickname);
+			saveAuthToCookie(response.data.data.token);
+			saveUserToCookie(response.data.data.email);
+			saveNickToCookie(response.data.data.nickname);
 			return data; //리턴 없어도 프로미스가 리턴됨
 		},
 	},

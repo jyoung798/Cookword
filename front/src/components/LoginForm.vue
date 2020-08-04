@@ -49,15 +49,7 @@ export default {
 				};
 				//await 없으면 에러
 				await this.$store.dispatch('LOGIN', userData);
-				//await : login이 끝나고 라우터 푸쉬로 이동해야 하기때문
-				// const response = await loginUser(userData);
-				// this.$store.commit('setToken', response.data.token);
-				// this.$store.commit('setEmail', response.data.email);
-				// saveAuthToCookie(response.data.token);
-				// saveUserToCookie(response.data.email);
-
-				// this.log = `${response.data.email}님 환영합니다`;
-				//	this.initForm();
+				this.initForm();
 				this.$router.push('/main');
 			} catch (error) {
 				console.log(error.response);

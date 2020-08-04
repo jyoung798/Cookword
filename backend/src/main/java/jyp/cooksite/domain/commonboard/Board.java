@@ -28,32 +28,20 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor // 인자없는 생성자를 자동 생성
 @AllArgsConstructor //
-public class Board {
+public class Board extends commonDate {
 
 	@Id
 	@GeneratedValue
 	@Column(name = "board_id")
 	private Long id;
 
+	@Column(nullable = false,length = 100)
 	private String title;
-
-	private String menu;
 	
-	@Column(length = 2000)
-	private String content;
+	
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
-	private User user;
+	
 
-	@OneToMany(mappedBy = "user")
-	private List<boardComments> boardcomments = new ArrayList<>();
+	
 
-	private LocalDate createdDate;
-
-	private LocalDate modDate;
-
-	private int viewCnt;
-
-	private int star;
 }

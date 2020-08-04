@@ -105,10 +105,9 @@ export default {
 	margin-bottom: 10px;
 }
 #list-container {
+	/* width: inherit; */
 	font-size: 14px;
 	border-radius: 0 !important;
 	border: 1px solid transparent;
-}
-.list-ul {
 }
 </style>

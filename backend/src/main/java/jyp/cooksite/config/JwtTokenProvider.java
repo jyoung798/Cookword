@@ -30,7 +30,7 @@ public class JwtTokenProvider { //jwt을 생성 하고 검증하는 모듈입니다.
 	@Value("spring.jwt.secret")
 	private String secretKey;
 	
-	private Long tokenValidMilisecond = 1000L *60 * 60 ; //토큰 기간 30분 유효기간 
+	private Long tokenValidMilisecond = 1000L *60 * 60 ; //토큰 기간 60분 유효기간 
 	
 	private final UserService userService;
 	
@@ -62,7 +62,7 @@ public class JwtTokenProvider { //jwt을 생성 하고 검증하는 모듈입니다.
     public String getUserPk(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
-    // Request의 Header에서 token 파싱 : "X-AUTH-TOKEN: jwt토큰"
+  
     public String resolveToken(HttpServletRequest request) {
     	
 

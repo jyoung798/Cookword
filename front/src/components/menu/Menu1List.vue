@@ -1,6 +1,6 @@
 <template>
 	<li class="list-li">
-		<h4 id="title">{{ postItem.title }}</h4>
+		<h4 id="title" @click="detailItem">{{ postItem.title }}</h4>
 		<div id="username">by 사용자 이름</div>
 	</li>
 </template>
@@ -22,6 +22,12 @@ export default {
 		const id = this.$route.params.id;
 		this.id = id;
 		console.log(id);
+	},
+	methods: {
+		async detailItem() {
+			const id = this.postItem.id;
+			this.$router.push(`/post/detail/${id}`);
+		},
 	},
 };
 </script>

@@ -1,8 +1,6 @@
 <template>
 	<div class="contents">
-		<h1 class="page-header">
-			New Aarticle
-		</h1>
+		<h1 class="page-header"></h1>
 		<!-- <p>
 			<img src="http://localhost:3000/image/abc.jpg" style="width:100px" />
 		</p> -->
@@ -16,21 +14,21 @@
 					<select class="selectbox" required="" v-model="menu">
 						<option value="">게시판을 선택해 주세요.</option>
 
-						<option value="1" data-external="" data-anonymity="false">
+						<option value="board1" data-external="" data-anonymity="false">
 							게시판1
 						</option>
 
-						<option value="2" data-external="" data-anonymity="false">
+						<option value="board2" data-external="" data-anonymity="false">
 							게시판2
 						</option>
-						<option value="3" data-external="" data-anonymity="false">
+						<option value="board3" data-external="" data-anonymity="false">
 							게시판3
 						</option>
 
-						<option value="4" data-external="" data-anonymity="false">
+						<option value="board4" data-external="" data-anonymity="false">
 							게시판4
 						</option>
-						<option value="5" data-external="" data-anonymity="false">
+						<option value="board5" data-external="" data-anonymity="false">
 							게시판5
 						</option>
 					</select>
@@ -86,7 +84,7 @@ export default {
 			contents: '',
 			menu: '',
 			logMessage: '',
-			content: '<h2>Example</h2>',
+			content: '',
 			// editorOption: {},
 			editorSettings: {
 				modules: {

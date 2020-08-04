@@ -42,7 +42,10 @@ const router = new VueRouter({
 			path: '/menu/:id',
 			component: () => import('../views/MenuListPage.vue'),
 		},
-
+		{
+			path: '/post/detail/:id',
+			component: () => import('../views/BoardDetail.vue'),
+		},
 		{
 			path: '*',
 			component: () => import('../views/NotFoundPage.vue'),

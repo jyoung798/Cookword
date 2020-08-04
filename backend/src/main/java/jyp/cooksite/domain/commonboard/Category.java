@@ -20,7 +20,7 @@ import lombok.Setter;
 @Getter @Setter
 @NoArgsConstructor // 인자없는 생성자를 자동 생성 
 @AllArgsConstructor //
-public class Category {
+public class Category extends commonDate {
 
 	@Id
 	@GeneratedValue
