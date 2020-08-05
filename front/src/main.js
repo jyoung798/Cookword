@@ -2,8 +2,9 @@ import Vue from 'vue';
 import App from './App.vue';
 import router from './routes/index';
 import store from './store/index.js';
+//import 'bootstrap';
+// import 'bootstrap/dist/css/bootstrap.css';
 
-Vue.config.productionTip = false;
 //import VueQuillEditor from 'vue-quill-editor';
 
 //import 'quill/dist/quill.core.css'; // import styles
