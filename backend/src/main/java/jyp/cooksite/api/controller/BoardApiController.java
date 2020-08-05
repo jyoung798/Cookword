@@ -12,6 +12,8 @@ import java.util.UUID;
 import javax.validation.Valid;
 
 import org.apache.tomcat.util.http.fileupload.FileUtils;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -38,6 +40,7 @@ import jyp.cooksite.api.request.LoginDto;
 import jyp.cooksite.api.response.CreateUserResponse;
 import jyp.cooksite.api.response.ListResult;
 import jyp.cooksite.api.response.LoginUserResponse;
+import jyp.cooksite.api.response.PageResult;
 import jyp.cooksite.api.response.SingleResult;
 import jyp.cooksite.api.response.dto.PostDetailResponse;
 import jyp.cooksite.api.service.ResponseService;
@@ -131,12 +134,17 @@ public class BoardApiController {
 		}
 
 		//특정 메뉴 번호에 따라 게시판 목록 리스트 호출
+		@CrossOrigin(origins = "*" ,allowedHeaders = "*" )
 		@GetMapping("/posts/menu/{id}")
-		public ListResult<Post> fetchPosts(@PathVariable("id") Long id) {
+		public PageResult<Post> fetchPosts(@PathVariable("id") Long id,
+				@PageableDefault(page=0,size=10) Pageable pageable) {
 			
 			
-			 return responseService.getListResult(boardService.findPosts( "board"+id ) ); //list.안에 Board 객체 
+			 return responseService.getPageResult(boardService.findPosts( "board"+id,pageable ) ); //list.안에 Board 객체 
 		} 
+		//페이징
+		
+		
 		
 		//게시판 상세 페이지 불러오기
 		@GetMapping("/posts/detail/{id}")

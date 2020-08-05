@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,9 +31,8 @@ import lombok.RequiredArgsConstructor;
 public class BoardService {
 
 	private final BoardRepository boardRepository;
-	private final UserRepository userRepository;
 	private final PostRepository postRepository;
-
+	private final UserRepository userRepository;
 	// 게시판 이름으로 게시판을 조회. 없을경우 예외 처리
     public Board findBoard(String boardName) {
         return Optional.ofNullable(boardRepository.findByTitle(boardName)).orElseThrow(CustomException::new);
@@ -50,8 +51,8 @@ public class BoardService {
 	}
 	
 	 // 게시판 이름으로 게시물 리스트 조회.
-    public List<Post> findPosts(String boardName) {
-        return postRepository.findByBoard(findBoard(boardName));
+    public Page<Post> findPosts(String boardName,Pageable pageable) {
+        return postRepository.findByBoard(findBoard(boardName),pageable);
     }
     
     //전체 게시글 리스트 

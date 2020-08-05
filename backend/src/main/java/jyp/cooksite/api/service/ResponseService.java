@@ -2,10 +2,12 @@ package jyp.cooksite.api.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import jyp.cooksite.api.response.CommonResult;
 import jyp.cooksite.api.response.ListResult;
+import jyp.cooksite.api.response.PageResult;
 import jyp.cooksite.api.response.SingleResult;
 
 @Service
@@ -53,6 +55,13 @@ public class ResponseService {
 		setSuccessResult(result);
 		return result;
 	}
+	// 페이징 결과를 처리하는 메소드
+		public <T> PageResult<T> getPageResult(Page<T> page) {
+			PageResult<T> result = new PageResult<>();
+			result.setPage(page);
+			setSuccessResult(result);
+			return result;
+		}
 
 	// 성공 결과만 처리하는 메소드
 	public CommonResult getSuccessResult() {
