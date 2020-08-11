@@ -1,7 +1,9 @@
 <template>
 	<li class="list-li">
-		<h4 id="title" @click="detailItem">{{ postItem.title }}</h4>
-		<div id="username">by 사용자 이름</div>
+		<h4 id="title">
+			<span @click="detailItem">{{ postItem.title }}</span>
+		</h4>
+		<div id="username">by {{ postItem.nickname }}</div>
 	</li>
 </template>
 <script>
@@ -41,6 +43,7 @@ export default {
 #username {
 	text-align: right;
 	color: darkorchid;
+	margin-right: 1rem;
 }
 
 .list-li {
