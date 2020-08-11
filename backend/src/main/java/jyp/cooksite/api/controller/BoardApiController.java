@@ -13,6 +13,7 @@ import javax.validation.Valid;
 
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -43,6 +44,7 @@ import jyp.cooksite.api.response.LoginUserResponse;
 import jyp.cooksite.api.response.PageResult;
 import jyp.cooksite.api.response.SingleResult;
 import jyp.cooksite.api.response.dto.PostDetailResponse;
+import jyp.cooksite.api.response.dto.PostListResponse;
 import jyp.cooksite.api.service.ResponseService;
 import jyp.cooksite.config.JwtTokenProvider;
 import jyp.cooksite.domain.commonboard.Board;
@@ -136,8 +138,8 @@ public class BoardApiController {
 		//특정 메뉴 번호에 따라 게시판 목록 리스트 호출
 		@CrossOrigin(origins = "*" ,allowedHeaders = "*" )
 		@GetMapping("/posts/menu/{id}")
-		public PageResult<Post> fetchPosts(@PathVariable("id") Long id,
-				@PageableDefault(page=0,size=10) Pageable pageable) {
+		public PageResult<PostListResponse> fetchPosts(@PathVariable("id") Long id,
+				@PageableDefault(page=0,size=10,sort = "id" ,direction = Sort.Direction.DESC) Pageable pageable) {
 			
 			
 			 return responseService.getPageResult(boardService.findPosts( "board"+id,pageable ) ); //list.안에 Board 객체 

@@ -17,6 +17,7 @@ import jyp.cooksite.api.response.LoginUserResponse;
 import jyp.cooksite.api.response.SingleResult;
 import jyp.cooksite.api.response.dto.CommentListResponse;
 import jyp.cooksite.api.response.dto.PostDetailResponse;
+import jyp.cooksite.api.response.dto.PostListResponse;
 import jyp.cooksite.domain.commonboard.Board;
 import jyp.cooksite.domain.commonboard.Post;
 import jyp.cooksite.domain.user.User;
@@ -51,8 +52,20 @@ public class BoardService {
 	}
 	
 	 // 게시판 이름으로 게시물 리스트 조회.
-    public Page<Post> findPosts(String boardName,Pageable pageable) {
-        return postRepository.findByBoard(findBoard(boardName),pageable);
+    public Page<PostListResponse> findPosts(String boardName,Pageable pageable) {
+    	
+    	Page<Post> PagePosts = postRepository.findByBoard(findBoard(boardName),pageable);
+    	List<Post> posts = PagePosts.getContent();
+    	//PagePosts.
+    	
+    	Page<PostListResponse> result= PagePosts
+				.map(b->new PostListResponse(b));
+    	
+    	
+        return result;
+        
+        
+        
     }
     
     //전체 게시글 리스트 
