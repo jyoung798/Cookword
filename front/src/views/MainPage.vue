@@ -8,7 +8,9 @@
 				<div class="col-content1-2">
 					<ul>
 						<li class="list-li" v-for="item in list[0]" :key="item.id">
-							<h3 style="display: inline;">{{ item.title }}</h3>
+							<h3 style="display: inline;" @click="detailItem(item.id)">
+								{{ item.title }}
+							</h3>
 							<div id="username">by{{ item.nickname }}</div>
 						</li>
 					</ul>
@@ -23,7 +25,9 @@
 				<div class="col-content1-2">
 					<ul>
 						<li class="list-li" v-for="item in list[1]" :key="item.id">
-							<h3 style="display: inline;">{{ item.title }}</h3>
+							<h3 style="display: inline;" @click="detailItem(item.id)">
+								{{ item.title }}
+							</h3>
 							<div id="username">by{{ item.nickname }}</div>
 						</li>
 					</ul>
@@ -42,7 +46,9 @@
 				<div class="col-content2-3">
 					<ul>
 						<li class="list-li" v-for="item in list[2]" :key="item.id">
-							<h3 style="display: inline;">{{ item.title }}</h3>
+							<h3 style="display: inline;" @click="detailItem(item.id)">
+								{{ item.title }}
+							</h3>
 							<div id="username">by{{ item.nickname }}</div>
 						</li>
 					</ul>
@@ -56,7 +62,9 @@
 				<div class="col-content2-3">
 					<ul>
 						<li class="list-li" v-for="item in list[3]" :key="item.id">
-							<h3 style="display: inline;">{{ item.title }}</h3>
+							<h3 style="display: inline;" @click="detailItem(item.id)">
+								{{ item.title }}
+							</h3>
 							<div id="username">by{{ item.nickname }}</div>
 						</li>
 					</ul>
@@ -95,6 +103,10 @@ export default {
 			this.list = response.data.list;
 			console.log(this.list[0]);
 			console.log(this.list[0][1]);
+		},
+		async detailItem(itemid) {
+			const id = itemid;
+			this.$router.push(`/post/detail/${id}`);
 		},
 	},
 	created() {
