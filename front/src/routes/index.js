@@ -41,6 +41,7 @@ const router = new VueRouter({
 		{
 			path: '/menu/:id',
 			component: () => import('../views/MenuListPage.vue'),
+			props: route => ({ query: route.query.pageCount }),
 		},
 		{
 			path: '/post/detail/:id',

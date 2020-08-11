@@ -27,8 +27,11 @@ function upload(file) {
 	return posts.post('/upload', file);
 }
 //메뉴에 따라 게시판 목록 호출
-function fetchBoardList(menuNum) {
-	return posts.get('/menu/' + menuNum);
+function fetchBoardList(menuNum, query) {
+	var page = query.page - 1;
+	return posts.get(
+		'/menu/' + menuNum + '?page=' + page + '&size=' + query.size,
+	);
 }
 
 //게시판 상세 페이지 호출
