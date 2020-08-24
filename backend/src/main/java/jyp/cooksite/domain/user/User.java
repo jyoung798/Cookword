@@ -30,8 +30,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jyp.cooksite.domain.Address;
-import jyp.cooksite.domain.blog.Blogs;
-import jyp.cooksite.domain.blog.blogComments;
 import jyp.cooksite.domain.commonboard.Board;
 import jyp.cooksite.domain.commonboard.boardComments;
 import lombok.Builder.Default;
@@ -147,7 +145,15 @@ public class User extends commonDate implements UserDetails {
 		return null;
 	}
 
+	/*
+	 * ½ºÅ©·¦
+	 * 
+	 */
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private List<UserScrapPost> scraps = new ArrayList<>();
 
-
-
+	public void addScrap(UserScrapPost scrap) {
+		scraps.add(scrap);
+		scrap.setUser(this);
+	}
 }
